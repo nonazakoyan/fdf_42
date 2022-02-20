@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nozakoya <nozakoya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nozakoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/17 17:28:09 by nozakoya          #+#    #+#             */
-/*   Updated: 2021/07/27 20:33:11 by nozakoya         ###   ########.fr       */
+/*   Created: 2022/02/19 21:00:47 by nozakoya          #+#    #+#             */
+/*   Updated: 2022/02/20 14:57:35 by nozakoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,17 @@ int	get_next_line(int fd, char **line)
 	int				r;
 	char			*buffer;
 	static char		*tmp;
-	int BUFFER_SIZE = 1;
-	if (fd < 0 || !line || BUFFER_SIZE <= 0)
+	int				buffer_size;
+
+	buffer_size = 1;
+	if (fd < 0 || !line || buffer_size <= 0)
 		return (-1);
-	buffer = malloc(BUFFER_SIZE + 1);
+	buffer = malloc(buffer_size + 1);
 	if (!(buffer))
 		return (-1);
 	while (1)
 	{
-		r = read(fd, buffer, BUFFER_SIZE);
+		r = read(fd, buffer, buffer_size);
 		if (r <= 0)
 			break ;
 		buffer[r] = '\0';

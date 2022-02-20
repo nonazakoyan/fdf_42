@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map.c                                        :+:      :+:    :+:   */
+/*   key_hook1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nozakoya <nozakoya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 20:59:05 by nozakoya          #+#    #+#             */
-/*   Updated: 2022/02/20 14:24:08 by nozakoya         ###   ########.fr       */
+/*   Created: 2022/02/19 21:01:27 by nozakoya          #+#    #+#             */
+/*   Updated: 2022/02/20 15:41:53 by nozakoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	check_map(char *file_name, t_fdf *data)
+int	key_hook1(long key)
 {
-	int		width;
-	int		fd;
-	char	*line;
-	int		w;
+	if (key)
+		exit(0);
+	return (0);
+}
 
-	fd = open(file_name, O_RDONLY);
-	get_next_line(fd, &line);
-	width = ft_word_count(line, ' ');
-	free(line);
-	while (get_next_line(fd, &line))
-	{
-		w = ft_word_count(line, ' ');
-		free(line);
-		if (w < width)
-		{
-			write(1, "ERROR\n", 6);
-			exit (0);
-		}
-	}
-	free(line);
-	data->width = width;
-	close (fd);
+int	funct_ptr(t_fdf *data)
+{
+	black_img(data);
+	draw(data);
+	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img.img, 0, 0);
+	return (1);
 }

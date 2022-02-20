@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nozakoya <nozakoya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nozakoya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/09 13:42:53 by nozakoya          #+#    #+#             */
-/*   Updated: 2022/02/12 20:53:47 by nozakoya         ###   ########.fr       */
+/*   Created: 2022/02/19 21:00:16 by nozakoya          #+#    #+#             */
+/*   Updated: 2022/02/20 14:46:03 by nozakoya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		ft_res(char *str, int i, int j)
+int	ft_res(char *str, int i, int j)
 {
 	int		l;
 	int		sign;
@@ -39,7 +39,7 @@ int		ft_res(char *str, int i, int j)
 	return (num * sign);
 }
 
-int		ft_atoi(char *s)
+int	ft_atoi(char *s)
 {
 	int		i;
 	int		res;
@@ -50,15 +50,15 @@ int		ft_atoi(char *s)
 	while (str[i])
 	{
 		if (!(str[i] == ' ' || str[i] == '+' || str[i] == '-' || str[i] == '\t'
-					|| str[i] == '\n' || str[i] == '\v' || str[i] == '\f'
-					|| str[i] == '\r' || ((str[i] >= '0' && str[i] <= '9') &&
-						(str[i + 1] >= '0' && str[i + 1] <= '9'))))
+				|| str[i] == '\n' || str[i] == '\v' || str[i] == '\f'
+				|| str[i] == '\r' || ((str[i] >= '0' && str[i] <= '9')
+					&& (str[i + 1] >= '0' && str[i + 1] <= '9'))))
 			break ;
 		else if ((str[i] == '+' || str[i] == '-') && (str[i + 1] == '\t'
-					|| str[i + 1] == '\n' ||
-					str[i + 1] == '\v' || str[i + 1] == '\f'
-					|| str[i + 1] == '\r' || str[i + 1] == ' '
-					|| str[i + 1] == '+' || str[i + 1] == '-'))
+				|| str[i + 1] == '\n' || str[i + 1] == '\v'
+				|| str[i + 1] == '\f' || str[i + 1] == '\r'
+				|| str[i + 1] == ' ' || str[i + 1] == '+'
+				|| str[i + 1] == '-'))
 			break ;
 		else
 			++i;

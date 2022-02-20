@@ -1,91 +1,69 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_line.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nozakoya <nozakoya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/19 20:59:19 by nozakoya          #+#    #+#             */
+/*   Updated: 2022/02/20 15:33:29 by nozakoya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-float	ft_max(float x, float y)
+void	draw_line(t_coord xyz, t_fdf *data)
 {
-	if (x > y)
-		return (x);
-	else
-		return (y);
-}
-
-void    fdf_3d(float *x, float *y, int z, fdf *data)
-{
-
-    *x = (*x - *y) * cos(data->angle);
-    *y = (*x + *y) * sin(data->angle) - z * data->z_coord;
-}
-
-
-void   fdf_zoom(float *x, float *y, float *x1, float *y1, fdf *data)
-{
-    *x *= data->zoom;
-    *x1 *= data->zoom;  
-    *y *= data->zoom;  
-    *y1 *= data->zoom; 
-}
-
-void fdf_shift(float *x, float *y, float *x1, float *y1, fdf *data)
-{
-	*x += data->shift_x;
-    *y += data->shift_y;
-    *x1 += data->shift_x;
-    *y1 += data->shift_y;
-}
-
-void    draw_line(float x, float y, float x1, float y1, fdf *data)
-{
-    float	dx;
+	float	dx;
 	float	dy;
 	float	max;
-	int		z;
-	int		z1;
 
-	z = data->fdf_map[(int)y][(int)x];
-	z1 = data->fdf_map[(int)y1][(int)x1];
-    if (z || z1)
-        data->color = 0xFF0000;
-    else
-        data->color = 0xFFFFFF;
-
-	fdf_zoom(&x, &y, &x1, &y1, data);
-	fdf_3d(&x, &y, z, data);
-	fdf_3d(&x1, &y1, z1, data);
-	fdf_shift(&x, &y, &x1, &y1, data);
-	dx = x1 - x;
-	dy = y1 - y;
+	fdf_color(&xyz, data);
+	fdf_zoom(&xyz, data);
+	fdf_3d(&xyz.x, &xyz.y, &xyz.z, data);
+	fdf_3d(&xyz.x1, &xyz.y1, &xyz.z1, data);
+	fdf_shift(&xyz, data);
+	dx = xyz.x1 - xyz.x;
+	dy = xyz.y1 - xyz.y;
 	max = ft_max(fabs(dx), fabs(dy));
 	dx /= max;
 	dy /= max;
-	while (((int)(x1 - x) || (int)(y1 - y)))
+	while (((int)(xyz.x1 - xyz.x) || (int)(xyz.y1 - xyz.y)))
 	{
-		if ((y < WIN_H) && (x < WIN_L))
+		if ((xyz.y < WIN_H) && (xyz.x < WIN_L))
 		{
-			if (x >= 0 && y >= 0)
-				my_mlx_pixel_put(&data->img, x, y, data->color);
+			if (xyz.x >= 0 && xyz.y >= 0)
+				my_mlx_pixel_put(&data->img, xyz.x, xyz.y, data->color);
 		}
-		x += dx;
-		y += dy;
+		xyz.x += dx;
+		xyz.y += dy;
 	}
 }
 
-void    draw(fdf *data)
+void	draw(t_fdf *data)
 {
- 	int	x;
-	int	y;
-    
-	y = 0;
-	while ((y < data->height))
+	t_coord		xyz;
+
+	xyz.y = 0;
+	while ((xyz.y < data->height))
 	{
-		x = 0;
-		while (x < data->width)
+		xyz.x = 0;
+		while (xyz.x < data->width)
 		{
-			if (x < data->width - 1)
-				draw_line(x, y, x + 1, y, data);
-			if (y < data->height - 1)
-				draw_line(x, y, x, y + 1, data);
-			x++;
+			if (xyz.x < data->width - 1)
+			{
+				xyz.x1 = xyz.x + 1;
+				xyz.y1 = xyz.y;
+				draw_line(xyz, data);
+			}
+			if (xyz.y < data->height - 1)
+			{
+				xyz.x1 = xyz.x;
+				xyz.y1 = xyz.y + 1;
+				draw_line(xyz, data);
+			}
+			xyz.x++;
 		}
-		y++;
+		xyz.y++;
 	}
 }
-

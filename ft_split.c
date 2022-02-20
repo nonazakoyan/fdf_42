@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nozakoya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/19 21:00:26 by nozakoya          #+#    #+#             */
+/*   Updated: 2022/02/20 14:50:24 by nozakoya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int	ft_word_count(char const *s, char c)
@@ -44,15 +56,15 @@ char	**f(char const *s, char c, char **result, int words_count)
 	{
 		while (*s == c)
 			s++;
-		j = 0;
+		j = -1;
 		w_len = ft_word_length(s, c);
-		if (!(result[i] = (char *)malloc(sizeof(char) * (w_len + 1))))
+		result[i] = (char *)malloc(sizeof(char) * (w_len + 1));
+		if (!(result[i]))
 			return (NULL);
-		while (j < w_len)
+		while (++j < w_len)
 		{
 			result[i][j] = *s;
 			s++;
-			j++;
 		}
 		result[i][j] = '\0';
 	}
@@ -68,7 +80,8 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	wcount = ft_word_count(s, c);
-	if (!(result = (char **)malloc(sizeof(char *) * (wcount + 1))))
+	result = (char **)malloc(sizeof(char *) * (wcount + 1));
+	if (!(result))
 		return (NULL);
 	result = f(s, c, result, wcount);
 	return (result);
